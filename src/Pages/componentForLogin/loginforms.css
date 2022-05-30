@@ -1,0 +1,40 @@
+
+#loginbody{
+    height: 75vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+#insidecard>*{
+    margin-block: 1rem;
+}
+
+#signup{
+    font-family: nunito;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.575);
+}
+
+#ombo{
+    font-family: Harabara;
+}
+
+#title{
+    padding: 0;
+    margin: 0;
+    font-size:3.2rem;
+}
+
+.btn{
+    background-color: #0058b4;
+    padding-block: 0.2rem;
+    color: white;
+    transition: all 0.2s;
+}
+.btn:hover{
+    opacity: 0.8;
+}

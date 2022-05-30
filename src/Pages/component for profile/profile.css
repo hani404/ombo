@@ -1,0 +1,327 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: nunito ;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+button{
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+input ,select{
+    border-radius: 5px;
+    font-size: large;
+    font-family: nunito;
+    font-weight: 400;
+}
+
+
+
+.hidden{
+    display: none!important;
+    visibility: hidden!important;
+}
+
+input{
+    display: block;
+}
+
+#hero{
+    padding: 1rem;
+    display: flex;
+    width: 100vw;
+}
+
+.cancel{
+    background-color: white;
+    color: #0058b4;
+    padding-inline: 1.5rem ;
+    padding-block: 0.2rem;
+
+}
+
+.update{
+    background-color: #0058b4;
+    color: white;
+    padding-inline: 1.5rem ;
+    padding-block: 0.2rem;
+}
+
+
+
+#img-holder{
+    border: 2px solid #0058b4;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    height: 150px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background-image: url(https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_206976.png&f=1&nofb=1);
+    background-size:contain;   
+    background-position: center;
+    transition: all 0.2s;
+    color: transparent;
+    clip-path: circle();
+}
+
+::-webkit-file-upload-button {
+    display: none;
+    size: 0;
+  }
+  
+
+
+#img-holder:hover{
+    background-image: url(https://pixsector.com/cache/d01b7e30/av7801257c459e42a24b5.png) !important;
+
+}
+
+
+
+
+#container1{
+    color: #0058b4;
+    border: #0058b4 4px solid ;
+    border-radius: 15px;
+    margin-right: 1rem;
+    padding: 2rem;
+    height: 100%;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+#list-name > li {
+    font-size: large;
+}
+
+#description{
+    height:fit-content;
+    padding: 1rem;
+}
+hr{
+    width: 90%;
+    height: 3px;
+    background-color: #0058b4;
+    margin-inline: auto;
+}
+
+.titles div{
+    margin-block: 1rem;
+
+}
+
+
+
+.titles{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#insid-description{
+    border-radius: 5px;
+    border: 1px solid rgba(128, 128, 128, 0.349);
+    background-color: #e4e4e4;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 1rem;
+
+}
+
+
+#insid-description > input{
+    font-size: large;
+    font-family: nunito;
+    font-weight: 400;
+    height: 6rem;
+    width: 100%;
+    text-decoration: none;
+    color: #0058b4;
+
+}
+
+#btn , #btn2 , #btn3 , #btn4 , #btn5{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+#insid-description > *{
+margin-block: 1rem;
+}
+
+#line{
+    height: 1px ;
+    background-color: black;
+}
+
+#list-name li{
+    padding-block: 1rem;
+    
+}
+
+#container2{   
+    border: #0058b4 4px solid ;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    height: fit-content;
+}
+
+
+#discription{
+    height: 30%;
+    margin: 2rem;
+}
+
+
+#discription input{
+    display: block;
+    height: 70%;
+    width: 95%;
+}
+
+#discription button{
+    padding-block:0.3rem ;
+    padding-inline: 2rem;
+    margin-inline: 3rem;
+}
+
+
+#aditional-info{
+    display: flex;   
+}
+
+#aditional-info>div{
+
+    width: 100%;
+    padding-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#box1{
+height: 100%;
+width: 50%;
+gap: 1rem;
+}
+
+
+.inside-box{
+    padding: 1rem;
+    height: 50%;
+    width: 100% ;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;   
+}
+
+
+
+
+
+#skills {
+    padding-block: 1rem;
+    padding-inline: 1rem;
+    border-radius: 5px;;
+    border: 1px solid rgba(128, 128, 128, 0.349);
+    background-color: #e4e4e4;
+    width: 100%;
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    transition: all 1s;
+
+}
+#skills > input , select{
+width: 100%;
+min-height: 3rem;
+}
+#skills select{
+    border-radius: 5px;
+}
+
+#skills * {
+   margin-block: 0.4rem;
+}
+
+#education{
+    padding-block: 1rem;
+    padding-inline: 1rem;
+    border-radius: 5px;;
+    border: 1px solid rgba(128, 128, 128, 0.349);
+    background-color: #e4e4e4;
+}
+
+#education * {
+    margin-block: 0.4rem;
+}
+
+.br{
+    width: 3px;
+    height: 90%;
+    background-color: #0058b4;
+    margin-inline: auto;
+}
+
+
+
+#box2{
+    height: 100%;
+    width: 50%;
+    gap: 1rem;
+    }
+
+#box2 > div {
+    height: 50%!important;
+}
+
+#certificat{
+    padding-block: 1rem;
+    padding-inline: 1rem;
+    border-radius: 5px;;
+    border: 1px solid rgba(128, 128, 128, 0.349);
+    background-color: #e4e4e4;
+    width: 100%;
+}
+
+#certificat > input , select{
+    width: 100%;
+    min-height: 3rem;
+}
+ #certificat * {
+    margin-block: 0.4rem;
+}
+#creatgig{
+    width: 100%;
+    padding: 1rem;
+}
+
+#creatgig>h1{
+    font-size: 60px;
+}
+.clickhere{
+    color: white;
+    background-color: #0058b4;
+    padding-block: 0.4rem;
+    padding-inline:1rem ;
+    border-radius: 5px;
+    margin-inline: auto!important;
+
+}

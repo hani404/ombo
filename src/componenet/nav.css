@@ -1,0 +1,104 @@
+*{
+    margin:0;
+    padding:0;
+    text-decoration: none;
+    list-style: none;
+}
+
+
+#nav{
+    width: 100%;
+    background: transparent;    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    padding-block: 1em;
+    margin: 0;
+   
+}
+
+.logo{
+    font-family: Harabara;
+    font-size: min(3em , 10vw);
+    color:#0058b4 ;
+}
+
+.left-side{
+    display: flex;
+    align-items: center;
+    gap: min(15rem , 15vw) ;
+
+}
+
+.list1{
+    display: flex;
+    align-items: center;
+    gap: 5vw;
+}
+a{  
+    font-family: nunito ;
+    font-size: 1rem;
+    color:#00152c ;
+}
+
+
+.right-side{
+    margin-left: 2rem;
+}
+
+.list2{
+    display: flex;
+    gap: 2.5rem;
+}
+
+.searchbar{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+}
+#search-icon{
+    color:#00152c;
+}
+
+.searchbar>input{
+    background: transparent;
+}
+
+.searchbar>button{
+    background: transparent;
+    border-style: none;  
+    font-size: larger;
+}
+.searchbar >input{
+    border-style: none;
+    font-family: nunito light;  
+    width: 20vw; 
+}
+.searchbar > ::placeholder{
+    color:#6e8399;
+    font-size:medium ;
+}
+
+#button{
+    color: aliceblue;
+    background-color: #0058b4;
+    font-size: 1rem;
+    border-radius: 3px;
+    padding-block: 0.3rem;
+    padding-inline:0.5rem;
+}
+
+ 
+
+
+@media (max-width :1500px){
+
+    #nav{
+        
+       margin-inline: 1rem;
+    }
+}
+
+.hidden{
+    display: hidden;
+}

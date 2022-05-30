@@ -1,0 +1,68 @@
+
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+#h3{
+    font-family: nunito;
+}
+
+
+.footer{
+   height: 15vh;
+}
+
+.left-div>a{
+    font-family: nunito ;
+    font-weight: 600;
+    color: #5c7c9e;
+}
+
+#logof{
+    font-family: Harabara;
+    font-size: min(2.25em , 10vw);
+}
+
+.footer{
+    background-color: #002c5c;
+    display: flex;
+    justify-content: space-between;
+    padding-inline:2rem;
+}
+
+.left-div{
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+
+.right-div{
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    
+}
+
+.right-div>h3{
+    font-weight: 600;
+    font-size: 1em;
+    color: #5c7c9e;
+}
+
+.images{
+
+    display: flex;
+    gap: 2rem;
+
+}
+
+.images *{
+    size: 90;
+}
+
+.images>li>a{
+    color: #5c7c9e;
+}

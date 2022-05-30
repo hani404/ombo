@@ -1,0 +1,20 @@
+
+
+.logo{
+    padding-left: 3rem;
+    font-family: Harabara;
+    font-size: min(3em , 10vw);
+    color:#0058b4 ;
+    
+}
+
+.nav{ 
+    height: 10vh;
+    align-items: center;
+    display: flex;
+    flex: left;
+    padding-block: 2rem;
+    margin: 0;
+    border-bottom: 1px solid #00152c94
+    
+}

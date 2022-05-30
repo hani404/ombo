@@ -1,0 +1,156 @@
+:root{
+    --prim-colo: #0058b4;
+    --second-colo: #0058b4;
+    --background-color: white;
+}
+
+
+#main{
+    padding: 15rem;
+    height: 75vh;
+    width: 100vw;
+    align-items: center;
+    display: flex;
+    justify-content:center ;
+    flex-direction: column;
+    text-align: center;
+}
+h1{
+    font-size: 4.5vw;
+    font-family: nunito regular;
+    font-weight: 400;
+    color: #0058b4;
+    margin-block: 1rem;
+}
+
+
+.cards{
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.colors-left{
+    background-color:--background-color ;
+    border-color: --prim-colo;
+}
+.colors-right{
+    background-color:--background-color ;
+    border-color: --prim-colo;
+}
+
+
+.insidecards{
+    color: #0058b4;
+    padding-inline: 2rem;
+    border: 2px solid ;
+    border-radius: 10px;
+    text-align: center; 
+    cursor:pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.insidecards>h3{
+    color:  --prim-colo;
+}
+
+#check1{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content:end ;
+}
+
+#check2{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content:end ;
+}
+
+.checkCircle{
+    margin-bottom: 2rem;
+}
+
+.choosedLeft{
+    color: white;
+    display: none;
+}
+
+.choosedRight{
+    color: white;
+    display: none;
+}
+
+
+
+
+
+.insidecards>*{
+    font-family: nunito;
+    font-weight: 300;
+}
+
+h3{
+    font-size: 1.5vw;
+    padding-inline: 2rem;
+}
+
+
+.insidecards>img{
+    height: 35%;
+    width: 30%;
+}
+
+span{
+    font-weight : 600 ;
+}
+
+.buttons {
+    width: 100%;
+    padding-block: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons>*{
+    position: absolute;
+}
+
+.buttons>.Blue{
+    color: white;
+    background-color: #0058b4 ;
+    border-radius: 5px;
+    padding: 1rem 3rem;
+}
+
+.creat{
+    display: none;
+}
+
+.client{   
+    display: none;
+}
+
+.freelancer{
+    display: none;
+}
+
+.buttons>.white{
+    cursor:default;
+    color: #0058b4;
+    border: 2px solid #0058b4;
+    border-radius: 5px;
+    padding: 1rem 3rem;
+    
+}
+
+h4{
+    font-family: nunito;
+    font-weight: 400;
+}
