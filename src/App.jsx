@@ -13,6 +13,9 @@ import { db } from './Pages/component/firebaseConfig/Firebase';
 import Profile from './Pages/Profile';
 import Creatgig from './Pages/Creatgig';
 import Gig from './Pages/component/Gig';
+import NoMatch from './NoMatch';
+import GigsInfo from './componenet/GigsInfo';
+import UserInfo from './componenet/UserInfo';
 
 
 
@@ -21,17 +24,21 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState(null)
   const [timeActive, setTimeActive] = useState(false)  
+  const [enuser , setEnUser] = useState("")
 
   useEffect(() => {
     onAuthStateChanged(auth , (user) => {
-      if (user) {
+      if (user) {      
+        if(user.emailVerified){
         setCurrentUser(user);
+        }
+        setEnUser(user)
       } else {
-        console.log("no user");
+        console.log("App.jsx no user");
         setCurrentUser(undefined);
       }
     })
-  }, [])
+  }, [enuser])
 
   const [userdata , setUserData]=useState([])
   const [gigresult , setGigResult] = useState([])
@@ -39,17 +46,17 @@ function App() {
   const getData = async () => {
       if(currentUser){
           const result = await onSnapshot(doc(db, "users", currentUser.uid), (docSnap)=>{setUserData(docSnap.data()); });
-          const result2 = await onSnapshot(doc(db, "gig", currentUser.uid), (docSnap)=>{setGigResult(docSnap.data()); });
   }} 
   
   useEffect(()=>{
     if(currentUser)
     getData();
-  },[currentUser])
-  
-  return (
+    },[currentUser])
+
+
+    return (
    <BrowserRouter>
-      <AuthProvider value={{currentUser , timeActive , setTimeActive , userdata , gigresult}}>
+      <AuthProvider value={{currentUser , timeActive , setTimeActive , enuser , }}>
         <Routes>
             <Route path='/' exact element={<Home/>}/>
             <Route path='/Findwork' exact element={<Findw/>}/>
@@ -58,7 +65,10 @@ function App() {
             <Route path ='/Login' exact element={<Login/>}/>
             <Route path ='/ProfilePage' exact element={<Profile/>}/>
             <Route path ='/Profile/CreatAGig' exact element={<Creatgig/>}/>
-            <Route path ={'/Gig'+userdata.firstname +gigresult.gigTitle} exact element={<Gig/>} />
+            <Route path ='/Gig' exact element={<Gig/>} />
+            <Route path='Gig/:gigid' element={<GigsInfo/>}/>
+            <Route path='userDetails/:userid' element={<UserInfo/>}/>
+            <Route path='*' element={<NoMatch/>}/>
         </Routes>
       </AuthProvider>
    </BrowserRouter>

@@ -1,8 +1,4 @@
-import React  , {useState} from 'react';
-import './main.css';
-import {auth} from './firebaseConfig/Firebase'
-import {useAuthValue} from '../../AuthContext'
-import {createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth'
+import React from "react";
 import {
   chakra,
   Box,
@@ -17,60 +13,11 @@ import {
   VisuallyHidden,
   Input,
 } from "@chakra-ui/react";
-import Verfication from './Verfication';
 
-
-export default function Main({title}) 
-{
-  const {currentUser} = useAuthValue()
-
-  const [firstname, setFirstName]= useState("");
-  const [lastname, setLastName]= useState("");
-  const [email, setEmail]= useState("");
-  const [password, setPassword]= useState("");
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-//button use state 
-  const [buttonPopup , setButtonPopup] = useState(false);
-//fire base related states 
-
-//email times hooks related 
-  const {setTimeActive} = useAuthValue()
-  
-
-  const validatePassword = () => {
-    let isValid = true
-    if (password !== '' && confirmPassword !== ''){
-      if (password !== confirmPassword) {
-        isValid = false
-        setError('Passwords does not match')
-      }
-    }
-    return isValid
-  }
-
-  const register = ()=> {
-    setError('')
-    if(validatePassword()) {
-      // Create a new user with email and password using firebase
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          sendEmailVerification(auth.currentUser).then(() => {
-            setTimeActive(true)
-            setButtonPopup(true);
-            console.log(email)
-          }).catch((err) => alert(err.message))
-        })
-        .catch(err => setError(err.message))
-    }
-    setPassword('')
-    setConfirmPassword('')
-  }
-
-
+const KuttyHero = ({register , setFirstName , setLastName , setEmail , setPassword , setConfirmPassword }) => {
   return (
-    <div id="Main">
-    <Box px={8} py={24} mx="auto">
+    <Box px={8} py={24} mx="auto" >
+      <form onSubmit={register} name='registration_form'>
       <SimpleGrid
         alignItems="center"
         w={{ base: "full", xl: 11 / 12 }}
@@ -95,75 +42,79 @@ export default function Main({title})
           <chakra.p
             mb={{ base: 10, md: 4 }}
             fontSize={{ base: "lg", md: "xl" }}
-            fontWeight="light"
+            fontWeight="thin"
             color="gray.500"
             letterSpacing="wider"
           >
-            Explore our most talented people! and take advantage of theire skills to build wondrfull things 
+            Low-latency voice and video feels like you’re in the same room. Wave
+            hello over video, watch friends stream their games, or gather up and
+            have a drawing session with screen share.
           </chakra.p>
         </GridItem>
         <GridItem colSpan={{ base: "auto", md: 4 }}>
           <Box as="form" mb={6} rounded="lg" shadow="xl">
             <Center pb={0} color={useColorModeValue("gray.700", "gray.600")}>
-              <p pt={2}>A library of talented people on few Clicks away!</p>
+              <p pt={2}>Start talking now</p>
             </Center>
             <SimpleGrid
               columns={1}
               px={6}
               py={4}
               spacing={4}
+              borderBottom="solid 1px"
+              borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <Flex>
                 <VisuallyHidden>First Name</VisuallyHidden>
                 <Input
+                   onChange={(event) => {setFirstName(event.target.value)}}
                   mt={0}
                   type="text"
                   placeholder="First Name"
-                  required={true}
-                  onChange={(event) => {setFirstName(event.target.value)}}
+                  required="true"
                 />
               </Flex>
               <Flex>
                 <VisuallyHidden>Last Name</VisuallyHidden>
                 <Input
+                  onChange={(event) => {setLastName(event.target.value)}}
                   mt={0}
                   type="text"
                   placeholder="Last Name"
-                  required={true}
-                  onChange={(event) => {setLastName(event.target.value)}}
+                  required="true"
                 />
               </Flex>
               <Flex>
                 <VisuallyHidden>Email Address</VisuallyHidden>
                 <Input
+                  onChange={(event) => {setEmail(event.target.value)}}
                   mt={0}
                   type="email"
                   placeholder="Email Address"
-                  required={true}
-                  onChange={(event) => {setEmail(event.target.value)}}
+                  required="true"
                 />
               </Flex>
               <Flex>
                 <VisuallyHidden>Password</VisuallyHidden>
                 <Input
+                  onChange={(event) => {setPassword(event.target.value)}}
                   mt={0}
                   type="password"
                   placeholder="Password"
-                  required={true}
-                  onChange={(event) => {setPassword(event.target.value)}} 
+                  required="true"
                 />
               </Flex>
               <Flex>
                 <VisuallyHidden>Confirm Password</VisuallyHidden>
                 <Input
+                  onChange={(event) =>setConfirmPassword(event.target.value)}
                   mt={0}
                   type="password"
                   placeholder="Confirm Password"
-                  required={true}
-                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  required="true"
                 />
               </Flex>
-              <Button colorScheme="blue" w="full" py={2} onClick={()=> register()}>
+              <Button colorScheme="brand" w="full" py={2} type="submit" bg='blueviolet' onSubmit={(e) => register(e)}  >
                 Sign up for free
               </Button>
             </SimpleGrid>
@@ -174,8 +125,9 @@ export default function Main({title})
           </chakra.p>
         </GridItem>
       </SimpleGrid>
+      </form>
     </Box>
-        <Verfication trigger = {buttonPopup} setTrigger={setButtonPopup} firstname={firstname ? firstname : "test"} lastname={lastname ? lastname : "test"} email={email ? email : 'test'} isfreelancer = {false}/>        
-    </div>
   );
 };
+
+export default KuttyHero;

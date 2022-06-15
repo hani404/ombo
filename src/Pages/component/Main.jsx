@@ -1,9 +1,22 @@
 import React  , {useState} from 'react';
 import './main.css';
-import Cards from './Cards';
 import {auth} from './firebaseConfig/Firebase'
 import {useAuthValue} from '../../AuthContext'
 import {createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth'
+import {
+  chakra,
+  Box,
+  GridItem,
+  useColorModeValue,
+  Button,
+  Stack,
+  Center,
+  Flex,
+  Icon,
+  SimpleGrid,
+  VisuallyHidden,
+  Input,
+} from "@chakra-ui/react";
 import Verfication from './Verfication';
 
 
@@ -25,32 +38,29 @@ export default function Main({title})
   const {setTimeActive} = useAuthValue()
   
 
-  const validatePassword = () => {
-    let isValid = true
+  const validatePassword = () => { //verify weather the password and the confirm password value are equal
+    let isValid = true // in case value matches varibale isValid get set to "true"
     if (password !== '' && confirmPassword !== ''){
       if (password !== confirmPassword) {
-        isValid = false
-        setError('Passwords does not match')
+        isValid = false // in case value matches varibale isValid get set to "false"
+        setError('Passwords does not match') 
       }
     }
-    return isValid
+    return isValid //returns the value of isValid weather true or false
   }
 
-  const register = e => {
-    e.preventDefault()
+  const register = ()=> {
     setError('')
-    if(validatePassword()) {
-      // Create a new user with email and password using firebase
-        createUserWithEmailAndPassword(auth, email, password)
+    if(validatePassword()) { // validatePassword is true 
+        createUserWithEmailAndPassword(auth, email, password)// Create a new user with email and password using firebase
         .then(() => {
-          sendEmailVerification(auth.currentUser)   
-          .then(() => {
+          sendEmailVerification(auth.currentUser).then(() => { //send a verification email using the curent user who has be registered in firebase authentification 
             setTimeActive(true)
             setButtonPopup(true);
             console.log(email)
-          }).catch((err) => alert(err.message))
+          }).catch((err) => alert(err.message)) // fails verification email wasn't sent 
         })
-        .catch(err => setError(err.message))
+        .catch(err => setError(err.message)) // fails could't creat the user account using those values 
     }
     setPassword('')
     setConfirmPassword('')
@@ -59,38 +69,112 @@ export default function Main({title})
 
   return (
     <div id="Main">
-
-          <Cards/>
-      
-
-          <div className="vl"></div>
-
-          <div className='main'>
-            <h2 id="title">
-                {title}
-            </h2>
-            <form onSubmit={register} name='registration_form'>
-                <ul className='name'>
-                    <li>
-                        <input className='name-fields' type="text"  placeholder='First Name'  onChange={(event) => {setFirstName(event.target.value)}}  required/>
-                    </li>
-                    <li>
-                        <input className='name-fields' type="text"  placeholder='Last Name' onChange={(event) => {setLastName(event.target.value)}}  required/>
-                    </li>
-                </ul>
-                <input type="email" value={email} placeholder='Email'  name="email field"   onChange={(event) => {setEmail(event.target.value)}} required/>
-                <input type="password" value={password} placeholder='Password' name=""    onChange={(event) => {setPassword(event.target.value)}}  required/>
-                <input type="password" value={confirmPassword} placeholder='Confirm Password' name=""  onChange={(event) => setConfirmPassword(event.target.value)}    required/>
-                <div className='check'>
-                        <input className='check-box' type="checkbox" name=""   required/>
-                        <h3>Yes, I undrustand and agree on all <a href="">Terms</a> and <a href="">Conditions.</a> </h3>
-                </div>
-                <button  className='button'onSubmit={register} type="submit" >Creact my account</button>
-            </form>
-          </div>
-
-          <Verfication trigger = {buttonPopup} setTrigger={setButtonPopup} firstname={firstname} lastname={lastname} email={email}/>
-                   
+    <Box px={8} py={24} mx="auto" >
+      <SimpleGrid
+        alignItems="center"
+        w={{ base: "full", xl: 11 / 12 }}
+        columns={{ base: 1, lg: 11 }}
+        gap={{ base: 0, lg: 24 }}
+        mx="auto"
+      >
+        <GridItem
+          colSpan={{ base: "auto", lg: 7 }}
+          textAlign={{ base: "center", lg: "left" }}
+        >
+          <chakra.h1
+            mb={4}
+            fontSize={{ base: "3xl", md: "4xl" }}
+            fontWeight="bold"
+            lineHeight={{ base: "shorter", md: "none" }}
+            color={useColorModeValue("gray.900", "gray.200")}
+            letterSpacing={{ base: "normal", md: "tight" }}
+          >
+            Ready to start your journey?
+          </chakra.h1>
+          <chakra.p
+            mb={{ base: 10, md: 4 }}
+            fontSize={{ base: "lg", md: "xl" }}
+            fontWeight="light"
+            color="gray.500"
+            letterSpacing="wider"
+          >
+            Share your skills among other talented people! and get the chance to be hired in the major league companies 
+          </chakra.p>
+        </GridItem>
+        <GridItem colSpan={{ base: "auto", md: 4 }}>
+          <Box as="form" mb={6} rounded="lg" shadow="xl">
+            <Center pb={0} color={useColorModeValue("gray.700", "gray.600")}>
+              <p pt={2}>Start earning right now!</p>
+            </Center>
+            <SimpleGrid
+              columns={1}
+              px={6}
+              py={4}
+              spacing={4}
+            >
+              <Flex>
+                <VisuallyHidden>First Name</VisuallyHidden>
+                <Input
+                  mt={0}
+                  type="text"
+                  placeholder="First Name"
+                  required={true}
+                  onChange={(event) => {setFirstName(event.target.value)}}
+                />
+              </Flex>
+              <Flex>
+                <VisuallyHidden>Last Name</VisuallyHidden>
+                <Input
+                  mt={0}
+                  type="text"
+                  placeholder="Last Name"
+                  required={true}
+                  onChange={(event) => {setLastName(event.target.value)}}
+                />
+              </Flex>
+              <Flex>
+                <VisuallyHidden>Email Address</VisuallyHidden>
+                <Input
+                  mt={0}
+                  type="email"
+                  placeholder="Email Address"
+                  required={true}
+                  onChange={(event) => {setEmail(event.target.value)}}
+                />
+              </Flex>
+              <Flex>
+                <VisuallyHidden>Password</VisuallyHidden>
+                <Input
+                  mt={0}
+                  type="password"
+                  placeholder="Password"
+                  required={true}
+                  onChange={(event) => {setPassword(event.target.value)}} 
+                />
+              </Flex>
+              <Flex>
+                <VisuallyHidden>Confirm Password</VisuallyHidden>
+                <Input
+                  mt={0}
+                  type="password"
+                  placeholder="Confirm Password"
+                  required={true}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                />
+              </Flex>
+              <Button colorScheme="blue" w="full" py={2} onClick={()=> register()}>
+                Sign up for free
+              </Button>
+            </SimpleGrid>
+          </Box>
+          <chakra.p fontSize="xs" textAlign="center" color="gray.600">
+            By signing up you agree to our{" "}
+            <chakra.a color="brand.500">Terms of Service</chakra.a>
+          </chakra.p>
+        </GridItem>
+      </SimpleGrid>
+    </Box>
+        <Verfication trigger = {buttonPopup} setTrigger={setButtonPopup} firstname={firstname?firstname : "test"} lastname={lastname?lastname : "test"} email={email?email : 'test'} isfreelancer = {true}/>        
     </div>
   );
 };

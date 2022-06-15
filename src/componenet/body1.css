@@ -4,10 +4,16 @@
 
 }
 .welcome{
-    min-height: 100vh;
+    padding-top: 6rem;
+    min-height: 90vh;
     width: 100%;
     display: flex;
     justify-content:space-evenly ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(./imgs/background1.png);
+    background-position: right;
+
     padding-inline: 2rem;
 }
 .welcome-left{
@@ -20,6 +26,7 @@
 }
 
 .welcoem-left>h1 , h2 ,.h3 {
+
 padding-top: 1rem;
 }
 
@@ -97,9 +104,14 @@ padding-top: 1rem;
     margin-block: auto;
     height: 80vh;
     width: 50%;
-    background-image: url(./imgs/background1.png);
     background-size: cover;
     background-position: top;
+
+}
+
+.welcome-right > *{
+    color: #0074ef;
+
 }
 
 .welcome-right > h1{
@@ -110,14 +122,12 @@ padding-top: 1rem;
 }
 
 .skills {
-    color: #0058b4;
     font-size: 1em;
     font-family: 'Noto Serif Display', serif ;
     font-style: italic;
     font-weight: 300;
 }
 .oportunities{
-    color: #0058b4;
     font-size: 1em;
     font-family: nunito black;
     font-weight: bolder;

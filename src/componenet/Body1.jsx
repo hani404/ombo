@@ -1,9 +1,12 @@
-import React  from 'react'
+import React   from 'react'
 import './body1.css';
 import { Link } from "react-router-dom";
+import { useEffect  , useState} from 'react';
 
 export function  Body1 () {
   
+
+
 
     return (
         

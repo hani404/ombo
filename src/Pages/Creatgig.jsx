@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { db , storage } from './component/firebaseConfig/Firebase'
 import NavL from './component/NavL'
 import { useAuthValue } from '../AuthContext'
-import {onSnapshot , doc , collection, setDoc} from 'firebase/firestore'
+import {onSnapshot , doc ,  setDoc} from 'firebase/firestore'
 import { getDownloadURL, uploadBytes , ref } from 'firebase/storage'
 import {useNavigate} from 'react-router-dom'
-import { async } from '@firebase/util'
+import { listGigId } from '../FetchData'
+import Footer from './component/Footer'
 
 
 function Creatgig() {
 
   const navigate = useNavigate();
   
-  const {currentUser} = useAuthValue()
-
+  const {currentUser} = useAuthValue();
  
   const [title ,setTitle]= useState("");
   const [category ,setCategory]= useState("");
@@ -28,11 +28,12 @@ function Creatgig() {
   const [premiumtime ,setPremiumTime]= useState("");
   const [premiumprice ,setPremiumPrice]= useState("");
   const [describe ,setDescribe]= useState("");
-  const [gigimage ,setGigImage]= useState([]);
-  const [imageurl , setImageUrl] = useState([]);
+  const [gigimage ,setGigImage]= useState("");
+  const [imageurl , setImageUrl] = useState("");
   const [gigvideo ,setGigVideo]= useState("");
   const [videourl , setVideoUrl] = useState("");
   const [active , setactive] = useState(true);
+  const [gigid , setGigId] = useState([])
 
 
   const [userdata , setUserData]=useState([])
@@ -46,28 +47,25 @@ function Creatgig() {
     getData();
   },[])
 
-
-
+  
   const handleChange = (e) => {
     for (let i = 0; i < e.target.files.length && i<2 ; i++) {
       const newImage = e.target.files[i];
-      setGigImage((prevState) => [...prevState, newImage]);
+      setGigImage(newImage);
       setactive(false);
     }
   };
 
-  
 
-  const handleUpload = (e) => {
+
+  const handleUpload = async (e) => {
     e.preventDefault();
     if(gigimage){
-      console.log(gigimage);
-    gigimage.map( async (Gigimage)  => {
-      const imagesRef = ref(storage , `gigimages/${Gigimage.name}`);   
-      console.log(Gigimage.name) 
-       await  uploadBytes(imagesRef , Gigimage);
-       await  getDownloadURL(imagesRef).then((url => setImageUrl(prev => [...prev ,url])));
-    });
+        const imagesRef = ref(storage , `gigimages/${gigimage.name}`);  // getting a reference to the storage in the database  
+        console.log(imagesRef);
+        await  uploadBytes(imagesRef , gigimage); // uploading the image been stored in the input field to the reference we set previously 
+        alert('image has been uploaded')
+        await  getDownloadURL(imagesRef).then(url => setImageUrl(url)); // getting the URL of the image from the storage section in database and storing that URL in a another variable 
   }else console.log('there is no fucking th')
  };
   
@@ -86,11 +84,14 @@ function Creatgig() {
 
   const CreatGig = async (e) => {
     e.preventDefault();
-    await setDoc(doc(db , 'gig' , currentUser.uid ),{gigID : currentUser.uid ,gigTitle:title , gigCategory:category , basicDeliver : basicdeliver , basicTime : basictime , basicPrice : basicprice , 
-             standardDeliver : standarddeliver  , standardTime : standardtime , standardPrice : standardprice , premiumDeliver : premiumdeliver , premiumTime : premiumtime , premiumPrice : premiumprice ,
-             gigDescription : describe , gigImages : imageurl , gigVideos : videourl }).then(navigate(`/Gig${userdata.firstname + title}`));
-             
-        
+    const id = `${Date.now()}` + '' ; // creating a n ID 
+    if(currentUser){ // if there is a current user then proceed 
+    await setDoc(doc(db , 'gig' , id ),{ gigID : id , userID : currentUser.uid ,gigTitle:title , gigCategory:category , basicDeliver : basicdeliver , basicTime : basictime , basicPrice : basicprice , 
+            standardDeliver : standarddeliver  , standardTime : standardtime , standardPrice : standardprice , premiumDeliver : premiumdeliver , premiumTime : premiumtime , premiumPrice : premiumprice ,
+            gigDescription : describe , gigImages : imageurl , gigVideos : videourl }); //creating a document with a specific ID including all the information about the Gig 
+            listGigId(currentUser.uid , id) //storing the id of the newly created gig into a string related to the current user
+            .then(navigate('/Gig/' + id)); // navigate the user to gig info page to check the created gig 
+            }         
   }
 
 
@@ -99,7 +100,7 @@ function Creatgig() {
   return (
       <>
         <NavL/>
-        <form onSubmit={(e)=>CreatGig(e)}>
+        <form id='form' onSubmit={(e)=>CreatGig(e)}>
         <div id="main">
           <div id="inside-main1">
         <div id="hero1">
@@ -110,11 +111,11 @@ function Creatgig() {
           <div id="span"><h2>0/80 max</h2></div>
           <div className="inside1.2">
             <h2>CATEGORY</h2>
-            <select onChange={(e)=>setCategory(e.target.value)} required>
+            <select onChange={(e)=>setCategory(e.target.value)} >
               <option value="0" className='hidden'>SELECT</option>
-              <option value="graphic">GRAPHIC</option>
-              <option value="digital-mark">DEGITAL MARKETING</option>
-              <option value="music">MUSIC AND AUDIO</option>
+              <option value="GRAPHIC">GRAPHIC</option>
+              <option value="DEGITAL MARKETING">DEGITAL MARKETING</option>
+              <option value="MUSIC AND AUDIO">MUSIC AND AUDIO</option>
             </select>
           </div>
         </div>
@@ -123,10 +124,10 @@ function Creatgig() {
             <div className="inside2 1">
               <div className="lil">
                 <h2>Basic</h2>
-                <input type="text" placeholder='with this format i will deliver....' onChange={(e)=>setBasicDeliver(e.target.value)}  required/>
+                <input type="text" placeholder='with this format i will deliver....' onChange={(e)=>setBasicDeliver(e.target.value)} required />
                 <div>
                   <h2>i'll deliverin in only</h2>
-                  <select onChange={(e)=>setBasicTime(e.target.value)} required >
+                  <select onChange={(e)=>setBasicTime(e.target.value)}  >
                     <option value="0" className="hidden">SELECT</option>
                     <option value="1">1 DAY</option>
                     <option value="2">2 DAY</option>
@@ -144,7 +145,7 @@ function Creatgig() {
                 <input type="text" placeholder='with this format i will deliver....'  onChange={(e)=>setStandardDeliver(e.target.value)} required />
                 <div>
                   <h2>i'll deliverin in only</h2>
-                  <select onChange={(e)=>setStandardTime(e.target.value)} required >
+                  <select onChange={(e)=>setStandardTime(e.target.value)}  >
                     <option value="0" className="hidden">SELECT</option>
                     <option value="1">1 DAY</option>
                     <option value="2">2 DAY</option>
@@ -153,7 +154,7 @@ function Creatgig() {
                 </div>
                 <div>
                 <h2>Your Price for Standard treatment</h2>
-                <input type='number' min={0} placeholder='name your price for Standard treatment' onChange={(e)=>setStandardPrice(e.target.value)}  required/>
+                <input type='number' min={0} placeholder='name your price for Standard treatment' onChange={(e)=>setStandardPrice(e.target.value)} required />
                 </div>
               </div>
               <hr />
@@ -162,7 +163,7 @@ function Creatgig() {
                 <input type="text" placeholder='with this format i will deliver....' onChange={(e)=>setPremiumDeliver(e.target.value)} required />
                 <div>
                   <h2>i'll deliverin in only</h2>
-                  <select onChange={(e)=>setPremiumTime(e.target.value)}  required>
+                  <select onChange={(e)=>setPremiumTime(e.target.value)}  >
                     <option value="0" className="hidden">SELECT</option>
                     <option value="1">1 DAY</option>
                     <option value="2">2 DAY</option>
@@ -171,7 +172,7 @@ function Creatgig() {
                 </div>
                 <div>
                 <h2>Your Price for Premium treatment</h2>
-                <input type='number' min={0} placeholder='name your price for Premium treatment' onChange={(e)=>setPremiumPrice(e.target.value)}  required/>
+                <input type='number' min={0} placeholder='name your price for Premium treatment' onChange={(e)=>setPremiumPrice(e.target.value)} required />
                 </div>
               </div>
             </div>
@@ -183,27 +184,20 @@ function Creatgig() {
           <input className='describe' maxLength={200}  type="text" placeholder='type here' onChange={(e)=>setDescribe(e.target.value)} required />
         </div>
         <hr />
-        <div id="hero4">
-          <div>
+        <div id="hero4 ">
+          <div className='lil'>
             <h1 className='heroTitle'>Showcase Your Services In A Gig Gallery</h1>
             <h2>Images(up to 3)</h2>
             <p>Get noticed by the right buyers with visual examples of your services.</p>
-            <input accept='.jpeg , .png , .jpg' type="file" multiple onChange={handleChange} required />
+            <input accept='.jpeg , .png , .jpg' type="file" onChange={handleChange} required />
             <button onClick={(e)=>handleUpload(e)} className="SGB"  >Save gig images</button>
           </div> 
-          <hr />  
-          <div>
-            <h2>Video (one only)</h2>
-            <p>Capture buyers' attention with a video that showcases your service.
-              Please choose a video shorter than 75 seconds and smaller than 50MB</p>
-            <input accept='.mp4' type="file" onChange={(e)=>setGigVideo(e.target.files)} />
-            <button onClick={(e)=>handlesavevideo(e)} className="SGB"  >Save gig video</button>
-          </div>          
         </div>
         <button className='SGBp' type='submit' > Save your Gig !</button>
         </div>
         </div>
         </form>
+        <Footer/>
       </>
   )
 }

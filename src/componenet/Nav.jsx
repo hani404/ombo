@@ -19,8 +19,8 @@ function  Nav () {
        <div className="left-side">
         <Link to='/' className='logo' >OMBO</Link>
         <ul className='list1'>
-            <li><Link to="/Findtalent"  >Find Talent</Link></li>
-            <li><Link to="/findwork"  >Find Work</Link></li>
+            {auth.currentUser ? <></> : <li><Link to="/Findtalent"  >Find Talent</Link></li>}
+            {auth.currentUser ? <></> : <li><Link to="/findwork"  >Find Work</Link></li> }
             <li className='searchbar'>
                 <button id='search-icon' ><AiOutlineSearch/></button>
                 <input type="text" placeholder='Great stuff only few keyboard types away'/>
@@ -29,8 +29,8 @@ function  Nav () {
         </div>
         <div className="right-side">
             <ul className='list2'>
-                {auth.currentUser ? "" : <li><Link to="/Login"  >Log in</Link></li>}
-                {auth.currentUser ? <ProfileIcon/> : <li><Link id='button' to="/ChooseCategorie" >Sign up</Link></li> }
+                {auth.currentUser ? <></> : <li><Link to="/Login"  >Log in</Link></li>}
+                {auth.currentUser ? <ProfileIcon /> : <li><Link id='button' to="/ChooseCategorie" >Sign up</Link></li> }
                 
             </ul> 
         </div>       

@@ -55,7 +55,7 @@ export default function Main() {
 
 
   return (
-    <div id='main'  >
+    <div id='mainX'  >
       <h1>Choose your categorie</h1>
       <div className="cards">
           <div className='insidecards colors-left' onClick={changecolorLeft}  > 

@@ -27,7 +27,7 @@ const auth = getAuth(app)
 // export const getDb= getDatabase(app);
 // export const ref = db.ref('server/saving-data/fireblog');
 
-export {auth}
+export {auth , app}
 
 export const db = getFirestore(app);
 

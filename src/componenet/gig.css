@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+#hero-1{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    padding-inline: 2rem;
+}
+
+#top{
+    height: 70%;
+    background-color: white;
+    width: 100%;
+    display: flex;
+}
+
+.imagesgig{
+    padding-inline: auto;
+    height: 350px;
+    background-position: center;
+    background-size: cover;
+    margin-inline: auto;
+}
+
+.profileimgage{
+    height: 100px;
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+    clip-path: circle();   
+}
+
+#left{
+    width: 50%;
+    align-items: center;
+    color: #0058b4;
+    
+}
+
+#left > h1  {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+#right{
+    width: 50%;
+}
+
+#right > ul {
+    display:flex ;
+    flex-direction: column;
+    justify-content:center ;
+    height: 100%;
+    padding-inline: 1rem;
+    gap: 1.5rem;
+    color: #0058b4;
+}
+#right > ul > li >h2{
+    margin: 0;
+    font-size: 2rem;
+}
+#right > ul > li >h3{
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+
+}
+.hr{
+    margin: 0.2rem !important;
+}
+
+#bottom{
+    color: #0058b4;
+}
+
+#bottom>h2{
+    font-size: 2rem;
+}
+#bottom > h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+}

@@ -20,6 +20,7 @@
 }
 
 #ombo{
+    font-size: 3rem;
     font-family: Harabara;
 }
 
@@ -33,6 +34,7 @@
     background-color: #0058b4;
     padding-block: 0.2rem;
     color: white;
+    border-radius: 7px !important;
     transition: all 0.2s;
 }
 .btn:hover{

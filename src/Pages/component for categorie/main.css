@@ -5,7 +5,7 @@
 }
 
 
-#main{
+#mainX{
     padding: 15rem;
     height: 75vh;
     width: 100vw;
@@ -125,7 +125,7 @@ span{
 .buttons>.Blue{
     color: white;
     background-color: #0058b4 ;
-    border-radius: 5px;
+    border-radius: 7px;
     padding: 1rem 3rem;
 }
 

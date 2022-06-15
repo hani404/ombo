@@ -1,50 +1,45 @@
-import react , {useState ,useEffect, useRef} from 'react'
-import { db } from '../Pages/component/firebaseConfig/Firebase';
-import { onSnapshot, doc } from 'firebase/firestore';
-import './body2.css'
-
+import  {useState ,useEffect} from 'react';
+import { db} from '../Pages/component/firebaseConfig/Firebase';
+import {collection,getDocs, orderBy, query } from 'firebase/firestore';
+import './body2.css';
+import { SimpleGrid ,  Flex , Text , Box} from '@chakra-ui/react';
+import {Cardsfreelance} from './Cardsfreelance';
 
 
 
 export function Body2(){
 
+     
+     const [giginfos , setGigInfo] = useState(null)
 
-const [gigresult , setGigResult] = useState([])
+     const GetAllGigs = async (db) => {
+          const gigs = await getDocs(
+            query(collection(db, "gig"), orderBy("gigID", "desc"))
+          );
+          return gigs.docs.map((doc) => doc.data());
+          console.log(gigs)
+      };
 
-const getData = async () => {   
-   const gigref = db.collection("gig")
-   const snapshot = await gigref.get()
-  await snapshot.forEach(doc=>{
-       setGigResult((prev)=>{
-          return [...prev , doc.data()];
-       })
-   })
-}
+      useEffect(() => {
+          GetAllGigs(db).then((data) => {
+               setGigInfo(data)});
+          },[]);
 
-useEffect(()=>{
-  getData();
-},[])
-
-console.log(gigresult[0]);
 
 
      return (
-         <>
-         <h1>anything</h1>
-        {gigresult.map((gigs) => (
-
-            <div>
-                <img src="" alt="" />
-                <div>
-                   <h2>{gigs.gigTitle}</h2>
-                   <p>{gigs.Descriprion}</p>
-                </div>
-            </div>
-
-        ))} 
-
-         
-          </>
+          <Box px={"2rem"} py='3rem'>
+          <Text fontSize={'4xl'}  my={7} color={'#0058b4'}>our best sellers</Text>
+          <Flex flexDirection={'column'}
+                    height={'100vh'}     
+                         >
+               <SimpleGrid spacing='40px' px='4' width={'full'} autoColumns={'max-content'} overflowX={'hidden'} minChildWidth={'190px'}>
+               {giginfos && giginfos?.map((data) => (
+                    <Cardsfreelance data={data} key={data.gigID} height='150px'  />
+               ))}
+               </SimpleGrid>
+               </Flex>
+               </Box>
      )
 }
 

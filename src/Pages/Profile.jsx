@@ -1,6 +1,6 @@
 import React, {  useEffect, useState } from 'react'
 import {db ,  storage} from './component/firebaseConfig/Firebase';
-import {updateDoc, doc, onSnapshot} from 'firebase/firestore'
+import {updateDoc, doc, getDoc} from 'firebase/firestore'
 import './component for profile/profile.css'
 import {ref , uploadBytes , getDownloadURL} from 'firebase/storage'
 import {Link} from "react-router-dom"
@@ -8,6 +8,20 @@ import {useAuthValue} from '../AuthContext'
 import NavL from '../Pages/component/NavL'
 import Footer from '../Pages/component/Footer'
 import {BsPencilFill} from 'react-icons/bs'
+import { Box, Flex, Grid, GridItem, Img, Text , SimpleGrid,
+    ButtonGroup,
+    Button,
+    PopoverTrigger,
+    Popover,
+    PopoverContent,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter,
+    Spinner} from '@chakra-ui/react';
+import { findcontract } from '../FetchData';
+import { CardsContract } from '../componenet/CardsContract';
 
 function Profile() {
 
@@ -24,27 +38,32 @@ function Profile() {
 
     const [desable ,setDesable] = useState(true);
 
-    // const [description , setDescription] = useState[""]
-    // const [description , setDescription] = useState[""]
-    // const [description , setDescription] = useState[""]
+    const [contract , setContract] = useState([]);
 
-
-    const {currentUser} = useAuthValue()
+    const {enuser} = useAuthValue()
     
     const [userdata , setUserData]=useState([])
 
     const getData = async () => {
-        if(currentUser){
-            const result = await onSnapshot(doc(db, "users", currentUser.uid), (docSnap)=>{ setUserData(docSnap.data());  } );
-      
+        if(enuser){
+            console.log(enuser.uid)
+            const docRef = doc(db, "users", enuser.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setUserData(docSnap.data());
+            } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+            }
+                        
     }} 
 
    
 
-
     const UpdateDescription = async (e) => {
         e.preventDefault();
-        const userUpdate = doc(db, "users", currentUser.uid);
+        const userUpdate = doc(db, "users", enuser.uid);
         await updateDoc(userUpdate, {
                         description: description,
                     });
@@ -53,7 +72,7 @@ function Profile() {
 
     const UpdateSkill = async (e) => {
         e.preventDefault();
-        const userUpdate = doc(db, "users", currentUser.uid);
+        const userUpdate = doc(db, "users", enuser.uid);
         await updateDoc(userUpdate, {
                         skill: skill, experience : experience,
                     }) ;
@@ -61,7 +80,7 @@ function Profile() {
 
     const UpdateEducation = async (e) => {
         e.preventDefault();
-        const userUpdate = doc(db, "users", currentUser.uid);
+        const userUpdate = doc(db, "users", enuser.uid);
         await updateDoc(userUpdate, {
                         city: city, title : title,year : year,
                     });
@@ -70,30 +89,39 @@ function Profile() {
 
 
     const UploadProfileImage = async () =>{
-        const imgRef = ref(storage , `ProfileUsers/ ${currentUser.uid + "png"}`);
+        const imgRef = ref(storage , `ProfileUsers/ ${enuser.uid + "png"}`);
         setDesable(false);
         await uploadBytes(imgRef , profileimage).then(
         alert('image uploaded succesfully')).then(setDesable(true))
         const photoURL = await getDownloadURL(imgRef) 
-        const userUpdate = doc(db, "users", currentUser.uid);
+        const userUpdate = doc(db, "users", enuser.uid);
         await updateDoc(userUpdate, {
                        imageUrl: photoURL,
                     }); 
     }
 
     useEffect(()=>{
-        if(currentUser)
-        setProfileURL(userdata.imageUrl)
+        if(enuser)
+        setProfileURL(userdata?.imageUrl)
     },[userdata]);
 
   
     useEffect( () => {
-        if(currentUser)
+        if(enuser){
         getData(); 
+    }
         
-    },[currentUser]);
+    },[enuser]);
 
-   
+    useEffect(()=>{
+        findcontract(db, enuser.uid , setContract);
+        console.log(contract)
+    },[enuser.uid])
+
+
+
+
+
     const hidden ={
         display : active ?  'block' :'none',
     }
@@ -127,15 +155,8 @@ function Profile() {
     const show4 ={
         display : active4 ?  'none' :'block',
     }
-    // const uploadbtn = {
-    //     display : desable ? 'none' : 'block',
-    // }
-    // const shown ={
-    //     height : active?'fit-content' : '100%',
-    //     width : active?'fit-content' : '100%'
-    // }
 
-
+    
 
 
   return (
@@ -147,9 +168,9 @@ function Profile() {
                 <button disabled={desable}  onClick={()=>UploadProfileImage()}>upload image</button>
                 <hr />
                     <ul id="list-name">
-                        <li>Name : {userdata.firstname} {userdata.lastname}</li>
-                        <li>from : {userdata.city}</li>
-                        <li>Email : {userdata.email}</li>
+                        <li>Name : {userdata?.firstname} {userdata?.lastname}</li>
+                        <li>from : {userdata?.city}</li>
+                        <li>Email : {userdata?.email}</li>
                     </ul>
                 </div>  
                 
@@ -170,9 +191,19 @@ function Profile() {
                                     <button className='cancel' onClick={()=> setActive(!active)}>Cancel</button>
                                     <button className='update' onClick={(e)=> {UpdateDescription(e) ; setActive(!active) }}>Update</button>
                             </div>
-                    </div>        
+                    </div>    
+                    {contract ?
+                    <>
+                    <Text py={"2rem"}>Current Gigs</Text>
+                    <Flex  h={'100%'} w={'full'}>
+                        <SimpleGrid spacing='40px' px='2' width={'full'} autoColumns={'max-content'} overflowX={'clip'} overflowY={'scroll'} minChildWidth={'190px'} maxH={'500px'}>
+                            {contract && contract?.map((data) => (
+                                    <CardsContract data={data} key={data.contractid} height='150px'  />
+                            ))}
+                        </SimpleGrid>
+                    </Flex></> : <></> }     
                 </div>
-                <hr />
+                { userdata.isFreelancer ?  
                 <div id="aditional-info">
                     <div id="box1">
                             <div className="inside-box">
@@ -182,16 +213,16 @@ function Profile() {
                                         <a href='#' onClick={()=>setActive2(!active2)} style={show2}>Add new</a>
                                     </div>
                                     <div>
-                                        <h2 style={show2}> skill : {userdata.skill}</h2>
-                                        <h2 style={show2}>level : {userdata.experience}</h2>
+                                        <h2 style={show2}> skill : {userdata?.skill}</h2>
+                                        <h2 style={show2}>level : {userdata?.experience}</h2>
                                     </div>
                                 </div>  
                                 <div id="skills" style={hidden2}>
-                                    <select  onChange={(event) =>{setSkill(event.target.value)}} >
+                                    <select  onChange={(e) =>{setSkill(e.target.value)}} >
                                         <option value="0" className='hidden' >Ex: coding...</option>
-                                        <option value="1">Programmer</option>
-                                        <option value="2">Digital Artist</option>
-                                        <option value="3">Videographer</option>
+                                        <option value="Programmer">Programmer</option>
+                                        <option value="Digital Artist">Digital Artist</option>
+                                        <option value="3Videographer">Videographer</option>
                                     </select>
                                     <select name="" id="" onChange={(event) => {setExperience(event.target.value)}}>
                                         <option value="0" className='hidden'>Experience Level</option>
@@ -213,9 +244,9 @@ function Profile() {
                                         <a href="#" onClick={()=> setActive3(!active3)} style={show3}> Add new</a>
                                     </div>
                                     <div>
-                                            <h2 style={show3}> skill : {userdata.city}</h2>
-                                            <h2 style={show3}>level : {userdata.title}</h2>
-                                            <h2 style={show3}>level : {userdata.year}</h2>
+                                            <h2 style={show3}> skill : {userdata?.city}</h2>
+                                            <h2 style={show3}>level : {userdata?.title}</h2>
+                                            <h2 style={show3}>level : {userdata?.year}</h2>
                                     </div>
                                     </div>
                                 <div id="education" style={hidden3}>
@@ -256,7 +287,7 @@ function Profile() {
                                     <a href="#" onClick={()=>setActive4(!active4)} style={show4}>Add new</a>
                                     </div>
                                     <dir>
-                                    <h2>{userdata.certificat}</h2>
+                                    <h2>{userdata?.certificat}</h2>
                                     </dir>
                                 </div>
                                 <dir id="certificat" style={hidden4}>
@@ -285,8 +316,12 @@ function Profile() {
                             </div>
                         </div> 
                     </div>
-                </div>          
+                : <></> } 
+                </div>      
+                   
         </div>
+
+        
         <Footer/>
     </> 
   )

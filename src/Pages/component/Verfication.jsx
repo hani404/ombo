@@ -8,9 +8,9 @@ import {db} from './firebaseConfig/Firebase';
 import { setDoc, doc} from 'firebase/firestore'
 import {useNavigate} from 'react-router-dom'
 
-function Verfication({trigger, setTrigger, firstname, lastname, email}) {
+function Verfication({trigger, setTrigger, firstname, lastname, email , isfreelancer}) {
 
-    const {currentUser} = useAuthValue()
+    const {currentUser , enuser} = useAuthValue()
 
     const [time, setTime] = useState(60)
     const [timeActive, setTimeActive] = useState(0);
@@ -18,27 +18,31 @@ function Verfication({trigger, setTrigger, firstname, lastname, email}) {
 
     const navigate = useNavigate()
 
-    const creatUser= async ()=>{
-      console.log(email)
-      await setDoc(doc(db, "users", currentUser.uid),{firstname: firstname, lastname: lastname, email: email , isFreelancer : true}).then((data) => console.log(data))
-      return 1;
+    const creatUser= async ()=>{  
+      if(enuser)  
+      await setDoc(doc(db, "users", enuser.uid),{firstname: firstname, lastname: lastname, email: email , isFreelancer : isfreelancer , gigIds : []}).then((data) => console.log(data))
+      console.log(enuser.uid) // setDoc allow us to creat a document in the data base giving the spesefic collection and an ID to it along the data needed to be stored
     };
 
+
     useEffect(() => {
-        const interval = setInterval(() => {
-          currentUser?.reload()
-          .then(() => {
-            if(currentUser?.emailVerified){
-              clearInterval(interval)
-              creatUser();
-              navigate('/')
-            }
-          })
-          .catch((err) => {
-            alert(err.message)
-          })
-        }, 1000)
-      }, [navigate, currentUser])
+        if(enuser && enuser?.reload()){ //
+          const interval = setInterval(() => {
+            enuser?.reload().then(() => {
+              if(enuser?.emailVerified){ //if the email is verified used the link sent by the previous verify function from firebase then proceed the document creation
+                clearInterval(interval)
+                console.log(enuser.uid)
+                creatUser(); // here the previous creat document function is called 
+                navigate('/')
+              }
+            })
+            .catch((err) => {
+              alert(err.message) // i
+            })
+          }, 1000)
+        }
+        
+      }, [navigate , enuser ])
 
     useEffect(() => {
         let interval = null
